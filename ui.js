@@ -1,11 +1,5 @@
 import {
-  WIDTH,
-  HEIGHT,
-  gameState,
-  makeBoard,
-  findSpotInCol,
-  checkForWin,
-  switchCurrPlayer,
+  Game,
 } from "./connect4.js";
 
 
@@ -97,7 +91,7 @@ function handleClick(evt) {
 /** Start game. */
 
 function start() {
-  makeBoard();
+  const game = new Game();
   makeHtmlBoard();
 }
 
