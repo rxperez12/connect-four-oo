@@ -7,6 +7,7 @@ import {
 
 function makeHtmlBoard(game) {
   const $htmlBoard = document.querySelector("#board");
+  $htmlBoard.innerHTML = '';
 
   // create top row of game to hold clickable cells
   const $top = document.createElement("tr");
@@ -16,6 +17,7 @@ function makeHtmlBoard(game) {
   for (let x = 0; x < game.width; x++) {
     const $headCell = document.createElement("td");
     $headCell.setAttribute("id", `top-${x}`);
+    $headCell.setAttribute("class", `top-row`);
     $headCell.addEventListener("click", (e) => {
       handleClick(e, game);
     });
@@ -58,6 +60,14 @@ function endGame(msg) {
   alert(msg);
 }
 
+/** stopGameMoves: prohibits players from making further moves */
+
+function stopGameMoves() {
+  const topRowCells = document.querySelectorAll('.top-row');
+  for (let i = 0; i < topRowCells.length; i++) {
+    topRowCells[i].removeEventListener('click',handleClick);
+  }
+}
 
 /** handleClick: handle click of column top to play piece */
 
@@ -79,11 +89,13 @@ function handleClick(evt, game) {
 
   // check for win
   if (game.checkForWin()) {
+    stopGameMoves();
     return endGame(`Player ${currPlayer} won!`);
   }
 
   // check for tie: if top row is filled, board is filled
   if (board[0].every(cell => cell !== null)) {
+    stopGameMoves();
     return endGame('Tie!');
   }
 
@@ -97,6 +109,11 @@ function start() {
   const game = new Game();
   makeHtmlBoard(game);
 }
+
+const button = document.querySelector('button');
+button.addEventListener('click', e => {
+  start();
+})
 
 
 export { start };

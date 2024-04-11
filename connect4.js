@@ -7,23 +7,31 @@
 
 
 /**
- * Create new game object which includes height, width with empty game board,
- * and current Player.
- * Includes methods switchPlayer, makeBoard, findSpotInCol,and checkForWin
+ * Model for a game of connect 4
+ * Takes in a height and width for the board
  */
 
 class Game {
   constructor(height = 6, width = 7) {
     this.height = height;
     this.width = width;
-    this.board = Array(height);
+    this.board = Array(this.height);
     this.makeBoard();
     this.currPlayer = 1;
   }
 
+  /** switchCurrPlayer:
+   *   checks the value of currPlayer and swaps the value to the other
+   *   player instance
+   */
+
   switchCurrPlayer() {
     this.currPlayer = this.currPlayer === 1 ? 2 : 1;
   }
+
+  /** makeBoard: fill in global `board`:
+  *    board = array of rows, each row is array of cells  (board[y][x])
+  */
 
   makeBoard() {
     for (let y = 0; y < this.height; y++) {
@@ -31,6 +39,10 @@ class Game {
       this.board[y] = emptyRow;
     }
   }
+
+  /** findSpotInCol: given column x, return y coordinate of furthest-down spot
+   *    (return null if filled)
+   */
 
   findSpotInCol(x) {
     for (let y = this.height - 1; y >= 0; y--) {
@@ -40,6 +52,8 @@ class Game {
     }
     return null;
   }
+
+  /** checkForWin: check board cell-by-cell for "does a win start here?" */
 
   checkForWin() {
     const _win = (cells) => {
@@ -56,6 +70,8 @@ class Game {
           this.board[y][x] === this.currPlayer
       );
     };
+
+    //const boundWin = _win.bind(this)
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -75,13 +91,6 @@ class Game {
     return false;
   }
 }
-
-let tryGame = new Game(6, 7);
-tryGame.makeBoard();
-tryGame.board[0][0] = 1;
-console.log(tryGame.board);
-console.log(tryGame.board.length);
-console.log(tryGame.board[0].length);
 
 
 export {
