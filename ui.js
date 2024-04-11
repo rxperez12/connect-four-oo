@@ -5,7 +5,7 @@ import {
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
-function makeHtmlBoard() {
+function makeHtmlBoard(game) {
   const $htmlBoard = document.querySelector("#board");
 
   // create top row of game to hold clickable cells
@@ -13,10 +13,12 @@ function makeHtmlBoard() {
   $top.setAttribute("id", "column-top");
 
   // fill top row with clickable cells
-  for (let x = 0; x < WIDTH; x++) {
+  for (let x = 0; x < game.width; x++) {
     const $headCell = document.createElement("td");
     $headCell.setAttribute("id", `top-${x}`);
-    $headCell.addEventListener("click", handleClick);
+    $headCell.addEventListener("click", (e) => {
+      handleClick(e, game);
+    });
     $top.append($headCell);
   }
   $htmlBoard.append($top);
@@ -24,10 +26,10 @@ function makeHtmlBoard() {
   // dynamically creates the main part of html board
   // uses HEIGHT to create table rows
   // uses WIDTH to create table cells for each row
-  for (let y = 0; y < HEIGHT; y++) {
+  for (let y = 0; y < game.height; y++) {
     const $row = document.createElement('tr');
 
-    for (let x = 0; x < WIDTH; x++) {
+    for (let x = 0; x < game.width; x++) {
       const $cell = document.createElement('td');
       $cell.setAttribute('id', `c-${y}-${x}`);
       $row.append($cell);
@@ -40,10 +42,10 @@ function makeHtmlBoard() {
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
-function placeInTable(y, x) {
+function placeInTable(y, x, currPlayer) {
   const $piece = document.createElement('div');
   $piece.classList.add('piece');
-  $piece.classList.add(`p${gameState.currPlayer}`);
+  $piece.classList.add(`p${currPlayer}`);
 
   const $spot = document.querySelector(`#c-${y}-${x}`);
   $spot.append($piece);
@@ -59,23 +61,24 @@ function endGame(msg) {
 
 /** handleClick: handle click of column top to play piece */
 
-function handleClick(evt) {
-  const { board, currPlayer } = gameState;
+function handleClick(evt, game) {
+  const { board, currPlayer } = game;
+
   // get x from ID of clicked cell
   const x = Number(evt.target.id.slice("top-".length));
 
   // get next spot in column (if none, ignore click)
-  const y = findSpotInCol(x);
+  const y = game.findSpotInCol(x);
   if (y === null) {
     return;
   }
 
   // place piece in board and add to HTML table
   board[y][x] = currPlayer;
-  placeInTable(y, x);
+  placeInTable(y, x, currPlayer);
 
   // check for win
-  if (checkForWin()) {
+  if (game.checkForWin()) {
     return endGame(`Player ${currPlayer} won!`);
   }
 
@@ -84,7 +87,7 @@ function handleClick(evt) {
     return endGame('Tie!');
   }
 
-  switchCurrPlayer();
+  game.switchCurrPlayer();
 }
 
 
@@ -92,7 +95,7 @@ function handleClick(evt) {
 
 function start() {
   const game = new Game();
-  makeHtmlBoard();
+  makeHtmlBoard(game);
 }
 
 

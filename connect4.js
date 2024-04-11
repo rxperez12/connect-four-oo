@@ -5,14 +5,11 @@
  * board fills (tie).
  */
 
-const WIDTH = 7;
-const HEIGHT = 6;
-
 
 /**
- * New game class
- * Inputs - Height, Width, board
- *
+ * Create new game object which includes height, width with empty game board,
+ * and current Player.
+ * Includes methods switchPlayer, makeBoard, findSpotInCol,and checkForWin
  */
 
 class Game {
@@ -58,7 +55,7 @@ class Game {
           x < this.width &&
           this.board[y][x] === this.currPlayer
       );
-    }
+    };
 
     for (let y = 0; y < this.height; y++) {
       for (let x = 0; x < this.width; x++) {
@@ -79,12 +76,12 @@ class Game {
   }
 }
 
-let tryGame = new Game(6,7);
+let tryGame = new Game(6, 7);
 tryGame.makeBoard();
 tryGame.board[0][0] = 1;
-console.log(tryGame.board)
-console.log(tryGame.board.length)
-console.log(tryGame.board[0].length)
+console.log(tryGame.board);
+console.log(tryGame.board.length);
+console.log(tryGame.board[0].length);
 
 
 export {
