@@ -1,5 +1,6 @@
 import {
   Game,
+  Player
 } from "./connect4.js";
 
 
@@ -47,7 +48,7 @@ function makeHtmlBoard(game) {
 function placeInTable(y, x, currPlayer) {
   const $piece = document.createElement('div');
   $piece.classList.add('piece');
-  $piece.classList.add(`p${currPlayer}`);
+  $piece.classList.add(`${currPlayer.color}`);
 
   const $spot = document.querySelector(`#c-${y}-${x}`);
   $spot.append($piece);
@@ -65,7 +66,7 @@ function endGame(msg) {
 function stopGameMoves() {
   const topRowCells = document.querySelectorAll('.top-row');
   for (let i = 0; i < topRowCells.length; i++) {
-    topRowCells[i].removeEventListener('click',handleClick);
+    topRowCells[i].removeEventListener('click', handleClick);
   }
 }
 
@@ -99,21 +100,26 @@ function handleClick(evt, game) {
     return endGame('Tie!');
   }
 
+  //if game.currPlayer === player1:
   game.switchCurrPlayer();
 }
 
+let player1, player2;
 
 /** Start game. */
 
 function start() {
-  const game = new Game();
+
+  player1 = new Player(document.querySelector('.player-1').value);
+  player2 = new Player(document.querySelector('.player-2').value);
+  const game = new Game(undefined, undefined, [player1, player2]);
   makeHtmlBoard(game);
 }
 
 const button = document.querySelector('button');
 button.addEventListener('click', e => {
   start();
-})
+});
 
 
 export { start };

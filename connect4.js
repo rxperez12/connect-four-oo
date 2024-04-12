@@ -7,17 +7,29 @@
 
 
 /**
+ * Model for a player of connect 4
+ */
+class Player {
+  constructor(color) {
+    this.color = color;
+  }
+}
+
+
+/**
  * Model for a game of connect 4
  * Takes in a height and width for the board
  */
 
 class Game {
-  constructor(height = 6, width = 7) {
+  constructor(height = 6, width = 7, allPlayers) {
     this.height = height;
     this.width = width;
     this.board = Array(this.height);
     this.makeBoard();
-    this.currPlayer = 1;
+    this.allPlayers = allPlayers;
+    this.currPlayer = this.allPlayers[0];
+
   }
 
   /** switchCurrPlayer:
@@ -25,8 +37,10 @@ class Game {
    *   player instance
    */
 
-  switchCurrPlayer() {
-    this.currPlayer = this.currPlayer === 1 ? 2 : 1;
+  switchCurrPlayer(player) {
+    this.currPlayer = this.currPlayer === this.allPlayers[0]
+      ? this.allPlayers[1]
+      : this.allPlayers[0];
   }
 
   /** makeBoard: fill in global `board`:
@@ -67,7 +81,7 @@ class Game {
           y < this.height &&
           x >= 0 &&
           x < this.width &&
-          this.board[y][x] === this.currPlayer
+          this.board[y][x] === this.currPlayer.color
       );
     };
 
@@ -95,4 +109,5 @@ class Game {
 
 export {
   Game,
+  Player
 };
