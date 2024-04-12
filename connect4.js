@@ -81,7 +81,7 @@ class Game {
           y < this.height &&
           x >= 0 &&
           x < this.width &&
-          this.board[y][x] === this.currPlayer.color
+          this.board[y][x] === this.currPlayer
       );
     };
 

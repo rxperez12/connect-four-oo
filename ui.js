@@ -49,7 +49,7 @@ function placeInTable(y, x, currPlayer) {
   const $piece = document.createElement('div');
   $piece.classList.add('piece');
   $piece.classList.add(`${currPlayer.color}`);
-
+  $piece.style.backgroundColor = currPlayer.color;
   const $spot = document.querySelector(`#c-${y}-${x}`);
   $spot.append($piece);
 }
@@ -91,7 +91,7 @@ function handleClick(evt, game) {
   // check for win
   if (game.checkForWin()) {
     stopGameMoves();
-    return endGame(`Player ${currPlayer} won!`);
+    return endGame(`Player ${currPlayer.color} won!`);
   }
 
   // check for tie: if top row is filled, board is filled
@@ -109,9 +109,8 @@ let player1, player2;
 /** Start game. */
 
 function start() {
-
-  player1 = new Player(document.querySelector('.player-1').value);
-  player2 = new Player(document.querySelector('.player-2').value);
+  player1 = new Player(document.querySelector('#player-1').value);
+  player2 = new Player(document.querySelector('#player-2').value);
   const game = new Game(undefined, undefined, [player1, player2]);
   makeHtmlBoard(game);
 }
