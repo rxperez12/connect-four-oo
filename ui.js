@@ -19,9 +19,7 @@ function makeHtmlBoard(game) {
     const $headCell = document.createElement("td");
     $headCell.setAttribute("id", `top-${x}`);
     $headCell.setAttribute("class", `top-row`);
-    $headCell.addEventListener("click", (e) => {
-      handleClick(e, game);
-    });
+    $headCell.addEventListener("click", handleClick);
     $top.append($headCell);
   }
   $htmlBoard.append($top);
@@ -48,7 +46,6 @@ function makeHtmlBoard(game) {
 function placeInTable(y, x, currPlayer) {
   const $piece = document.createElement('div');
   $piece.classList.add('piece');
-  $piece.classList.add(`${currPlayer.color}`);
   $piece.style.backgroundColor = currPlayer.color;
   const $spot = document.querySelector(`#c-${y}-${x}`);
   $spot.append($piece);
@@ -64,15 +61,15 @@ function endGame(msg) {
 /** stopGameMoves: prohibits players from making further moves */
 
 function stopGameMoves() {
-  const topRowCells = document.querySelectorAll('.top-row');
-  for (let i = 0; i < topRowCells.length; i++) {
-    topRowCells[i].removeEventListener('click', handleClick);
+  const $topRowCells = document.querySelectorAll('.top-row');
+  for (let i = 0; i < $topRowCells.length; i++) {
+    $topRowCells[i].removeEventListener('click', handleClick);
   }
 }
 
 /** handleClick: handle click of column top to play piece */
 
-function handleClick(evt, game) {
+function handleClick(evt) {
   const { board, currPlayer } = game;
 
   // get x from ID of clicked cell
@@ -105,20 +102,23 @@ function handleClick(evt, game) {
 }
 
 let player1, player2;
+let game;
 
 /** Start game. */
 
-function start() {
+function buildGame() {
   player1 = new Player(document.querySelector('#player-1').value);
   player2 = new Player(document.querySelector('#player-2').value);
-  const game = new Game(undefined, undefined, [player1, player2]);
+  game = new Game(player1, player2, undefined, undefined);
   makeHtmlBoard(game);
 }
 
-const button = document.querySelector('button');
-button.addEventListener('click', e => {
-  start();
-});
+function start() {
+  const button = document.querySelector('button');
+  button.addEventListener('click', e => {
+    buildGame();
+  });
+}
 
 
 export { start };

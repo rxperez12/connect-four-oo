@@ -20,14 +20,15 @@ class Player {
  * Model for a game of connect 4
  * Takes in a height and width for the board
  */
+//TODO: update the docString
 
 class Game {
-  constructor(height = 6, width = 7, allPlayers) {
+  constructor(player1, player2, height = 6, width = 7) {
     this.height = height;
     this.width = width;
     this.board = Array(this.height);
     this.makeBoard();
-    this.allPlayers = allPlayers;
+    this.allPlayers = [player1, player2];
     this.currPlayer = this.allPlayers[0];
 
   }
